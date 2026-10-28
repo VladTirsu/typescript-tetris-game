@@ -1,5 +1,5 @@
 
-name: Build Vector Blocks
+name: Build and Test Vector Blocks
 
 on:
   push:
@@ -25,6 +25,17 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vector-blocks-test-results
+          path: test-results/
+          if-no-files-found: warn
 
       - name: Build game
         run: npm run build
